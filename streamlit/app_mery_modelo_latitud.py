@@ -48,7 +48,7 @@ if st.session_state.recomendaciones is not None:
     if recomendaciones.empty:
         st.warning("No se encontraron restaurantes cercanos. Intenta con otra ubicación.")
     else:
-        st.success(f"Se encontraron {len(recomendaciones)} restaurantes cerca de la ubicación ingresada.")
+        st.success(f"Estos son los {len(recomendaciones)} restaurantes que te recomendamos cerca de tu ubicacion")
         
         # Mostrar tabla de recomendaciones
         st.dataframe(recomendaciones[['name', 'latitude', 'longitude', 'stars', 'categories']])
