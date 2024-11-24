@@ -28,6 +28,10 @@ def recommend_restaurants(df, latitude, longitude, kmeans):
     # Filtrar los mejores 5 restaurantes
     return df[df["cluster"] == cluster].iloc[0:5][['name', 'latitude', 'longitude', 'stars', 'categories', 'review_count', 'business_id']]
 
+# Inicializar session_state para recomendaciones
+if "recomendaciones" not in st.session_state:
+    st.session_state.recomendaciones = None
+
 # Entrada de usuario
 st.sidebar.header("Ingresar Ubicación")
 latitud = st.sidebar.number_input("Latitud", value=0.0, format="%.6f")
@@ -35,8 +39,12 @@ longitud = st.sidebar.number_input("Longitud", value=0.0, format="%.6f")
 
 if st.sidebar.button("Buscar Restaurantes"):
     # Obtener recomendaciones
-    recomendaciones = recommend_restaurants(top_restaurants, latitud, longitud, kmeans)
-    
+    st.session_state.recomendaciones = recommend_restaurants(top_restaurants, latitud, longitud, kmeans)
+
+# Mostrar resultados si existen recomendaciones
+if st.session_state.recomendaciones is not None:
+    recomendaciones = st.session_state.recomendaciones
+
     if recomendaciones.empty:
         st.warning("No se encontraron restaurantes cercanos. Intenta con otra ubicación.")
     else:
