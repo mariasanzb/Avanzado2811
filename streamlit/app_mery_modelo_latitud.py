@@ -1,4 +1,4 @@
-#pip install streamlit folium streamlit-folium
+# pip install streamlit folium streamlit-folium
 
 import streamlit as st
 import pickle
@@ -31,14 +31,14 @@ if st.button("Buscar Restaurantes"):
 
     # Filtrar restaurantes en el mismo cluster
     recomendaciones = top_restaurants[top_restaurants['cluster'] == cluster]
-    
+
     if recomendaciones.empty:
         st.warning("No se encontraron restaurantes cercanos. Intenta con otra ubicación.")
     else:
         st.success(f"Se encontraron {len(recomendaciones)} restaurantes cerca de la ubicación ingresada.")
         
         # Mostrar tabla de recomendaciones
-        st.dataframe(recomendaciones[['name', 'address', 'rating', 'latitude', 'longitude']])
+        st.dataframe(recomendaciones[['name', 'latitude', 'longitude', 'stars', 'categories']])
 
         # Crear mapa
         m = folium.Map(location=[latitud, longitud], zoom_start=13)
@@ -47,7 +47,7 @@ if st.button("Buscar Restaurantes"):
         for _, row in recomendaciones.iterrows():
             folium.Marker(
                 [row['latitude'], row['longitude']],
-                popup=f"{row['name']} - {row['rating']}⭐\n{row['address']}",
+                popup=f"{row['name']} - {row['stars']}⭐\nCategorías: {row['categories']}",
                 icon=folium.Icon(color="green")
             ).add_to(m)
 
