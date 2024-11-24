@@ -10,3 +10,4 @@ folium
 plotly
 hvplot
 config
+streamlit-folium
