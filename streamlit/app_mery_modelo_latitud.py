@@ -1,5 +1,3 @@
-# pip install streamlit folium streamlit-folium
-
 import streamlit as st
 import pickle
 import pandas as pd
@@ -23,9 +21,11 @@ top_restaurants = data['df']
 
 # Definir la función para recomendar restaurantes
 def recommend_restaurants(df, latitude, longitude, kmeans):
-    # Predecir el cluster para la latitud y longitud proporcionadas
-    cluster = kmeans.predict(np.array([latitude, longitude]).reshape(1, -1))[0]
-    # Filtrar los mejores 5 restaurantes del cluster
+    # Crear DataFrame con nombres explícitos
+    user_location = pd.DataFrame({'latitude': [latitude], 'longitude': [longitude]})
+    # Predecir el cluster
+    cluster = kmeans.predict(user_location[['latitude', 'longitude']])[0]
+    # Filtrar los mejores 5 restaurantes
     return df[df["cluster"] == cluster].iloc[0:5][['name', 'latitude', 'longitude', 'stars', 'categories', 'review_count', 'business_id']]
 
 # Entrada de usuario
@@ -45,16 +45,17 @@ if st.sidebar.button("Buscar Restaurantes"):
         # Mostrar tabla de recomendaciones
         st.dataframe(recomendaciones[['name', 'latitude', 'longitude', 'stars', 'categories']])
 
-        # Crear mapa
-        m = folium.Map(location=[latitud, longitud], zoom_start=13)
-        folium.Marker([latitud, longitud], popup="Tu ubicación", icon=folium.Icon(color="blue")).add_to(m)
-        
-        for _, row in recomendaciones.iterrows():
-            folium.Marker(
-                [row['latitude'], row['longitude']],
-                popup=f"{row['name']} - {row['stars']}⭐\nCategorías: {row['categories']}",
-                icon=folium.Icon(color="green")
-            ).add_to(m)
+        # Crear mapa solo una vez
+        with st.spinner("Generando mapa..."):
+            m = folium.Map(location=[latitud, longitud], zoom_start=13)
+            folium.Marker([latitud, longitud], popup="Tu ubicación", icon=folium.Icon(color="blue")).add_to(m)
+            
+            for _, row in recomendaciones.iterrows():
+                folium.Marker(
+                    [row['latitude'], row['longitude']],
+                    popup=f"{row['name']} - {row['stars']}⭐\nCategorías: {row['categories']}",
+                    icon=folium.Icon(color="green")
+                ).add_to(m)
 
-        # Mostrar mapa en Streamlit
-        st_folium(m, width=800, height=500)
+            # Mostrar mapa en Streamlit
+            st_folium(m, width=800, height=500)
