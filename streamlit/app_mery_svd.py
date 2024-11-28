@@ -59,6 +59,15 @@ def generate_top_recommendations(user_id, model, metadata, top_n=5, thresh=4):
     return recommendations[:top_n]
 
 # Cargar el modelo serializado
+import os
+
+model_path = './Data/svd_model.pkl'
+if os.path.exists(model_path):
+    with open(model_path, 'rb') as model_file:
+        model = pickle.load(model_file)
+else:
+    st.error(f"El archivo {model_path} no existe.")
+
 with open('./Data/svd_model.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
 
