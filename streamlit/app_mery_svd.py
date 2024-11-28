@@ -3,9 +3,16 @@ import pandas as pd
 import pickle
 from surprise import SVD, Dataset, Reader
 import difflib
+import gdown
 
 # Cargar los datasets
-reviews = pd.read_parquet('reviews.parquet', engine='pyarrow')
+url = 'https://drive.google.com/uc?export=download&id=1tY2U8IjcUo2NTbXMWvY1Bg9eG8qn9fcK'
+gdown.download(url, 'reviews.parquet', quiet=False)
+
+# Ahora puedes cargar el archivo como un DataFrame de pandas o usarlo como lo necesites
+import pandas as pd
+reviews = pd.read_parquet('reviews.parquet',engine='pyarrow')
+
 restaurant = pd.read_parquet('mi_archivo1.parquet', engine='pyarrow')
 
 # Crear el dataset de Surprise
