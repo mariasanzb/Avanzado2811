@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 import pickle
-import surprise
-from surprise import SVD, Dataset, Reader
 import difflib
 import gdown
 
