@@ -21,6 +21,14 @@ st.write(
     La predicción se realiza con un modelo de filtrado colaborativo que predice las calificaciones de los restaurantes en función de tus gustos.
     """
 )
+model_path = './Data/svd_model.pkl'
+if os.path.exists(model_path):
+    st.write("El archivo existe")
+    with open(model_path, 'rb') as model_file:
+        model = pickle.load(model_file)
+else:
+    st.error(f"El archivo {model_path} no existe.")
+
 
 # Funciones auxiliares
 def get_restaurant_id(restaurant_title, metadata):
@@ -59,17 +67,6 @@ def generate_top_recommendations(user_id, model, metadata, top_n=5, thresh=4):
     recommendations = sorted(recommendations, key=lambda x: x['predicted_rating'], reverse=True)
     return recommendations[:top_n]
 
-# Cargar el modelo serializado
-
-model_path = './Data/svd_model.pkl'
-if os.path.exists(model_path):
-    with open(model_path, 'rb') as model_file:
-        model = pickle.load(model_file)
-else:
-    st.error(f"El archivo {model_path} no existe.")
-
-with open('./Data/svd_model.pkl', 'rb') as model_file:
-    model = pickle.load(model_file)
 
 # Interfaz de usuario en Streamlit
 st.header("🔑 Introduce tu ID de Usuario para obtener recomendaciones")
