@@ -3,6 +3,7 @@ import pandas as pd
 import pickle
 import difflib
 import gdown
+import os
 
 # Cargar los datasets
 url = 'https://drive.google.com/uc?export=download&id=1tY2U8IjcUo2NTbXMWvY1Bg9eG8qn9fcK'
@@ -59,7 +60,6 @@ def generate_top_recommendations(user_id, model, metadata, top_n=5, thresh=4):
     return recommendations[:top_n]
 
 # Cargar el modelo serializado
-import os
 
 model_path = './Data/svd_model.pkl'
 if os.path.exists(model_path):
