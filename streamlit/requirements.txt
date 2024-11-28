@@ -15,5 +15,6 @@ pyarrow
 scikit-surprise
 streamlit
 gdown
-surprise
+cython
+
 
