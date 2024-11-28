@@ -1,1 +1,2 @@
 *.parquet filter=lfs diff=lfs merge=lfs -text
+mi_archivo1.parquet filter=lfs diff=lfs merge=lfs -text
