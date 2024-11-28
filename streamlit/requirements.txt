@@ -12,9 +12,10 @@ hvplot
 config
 streamlit-folium
 pyarrow
+cython
 git+https://github.com/NicolasHug/Surprise.git
 streamlit
 gdown
-cython
+
 
 
